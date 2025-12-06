@@ -56,11 +56,11 @@ Ce document décrit les parcours utilisateurs clés, les rôles et les points d�
 ## Parcours Employé
 1) **Accès** : menu compte > « Espace employé ».  
 2) **Avis à valider** : liste des avis en statut `A_VALIDER`.  
-   - Bouton « Valider & créditer » : crédite le chauffeur si pas encore crédité.  
-   - Bouton « Refuser » : aucune rémunération chauffeur.  
-3) **Incidents** : section « Covoiturages signalés » (commentaires négatifs/REPORTED).  
-   - Formulaire par trajet pour créditer un passager en cas de litige (montant au choix + note interne).  
-   - Le trajet passe en statut résolu et disparaît de la liste après le crédit.
+   - Bouton « Valider & créditer » : crédite automatiquement le chauffeur concerné (prise en compte du nombre de places achetées) s’il ne l’a pas encore été.  
+   - Bouton « Refuser » : aucune rémunération chauffeur, l’avis passe en `REFUSE`.  
+3) **Incidents** : section « Covoiturages signalés » (commentaires négatifs/`REPORTED`).  
+   - Formulaire « Créditer le passager » : permet à l’employé d’attribuer manuellement des crédits au passager lésé (montant libre + note interne conservée dans l’incident).  
+   - Après validation, le crédit est ajouté instantanément au compte du passager, l’incident est marqué comme résolu et disparaît de la liste.
 
 ## Parcours Administrateur
 1) **Accès** : menu compte > « Espace admin ».  

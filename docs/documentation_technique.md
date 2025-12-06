@@ -44,4 +44,5 @@
 - **Chart.js** : import local via importmap, utilisé dans le dashboard admin.
 - **Responsive** : header/footer et vues clés ajustés pour tablettes/mobiles (nav wrap, footer en colonne).
 - **Crédits** : débit à la participation, crédit chauffeur après validation avis par un employé ; annulation rembourse le passager.
+- **Gestion des litiges** : l’espace employé (controller `Admin\AdminAvisController`, vue `templates/admin/avis/incidents.html.twig`) propose un formulaire sécurisé pour créditer manuellement un passager en cas de litige. Le montant saisi est immédiatement ajouté à son solde et l’incident passe en résolu.
 - **Données SQL** : un dump complet `docs/dump_ecoride.sql` est fourni (schéma + données de démo). Générer des dumps séparés si requis (schema/data).
