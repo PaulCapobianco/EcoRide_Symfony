@@ -17,12 +17,13 @@ Le paquet fourni pour l’ECF contient :
 
 ## Installation
 ```bash
-git clone <repo> ecoride-ecf
-cd ecoride-ecf/EcoRide    # adapter si vous avez cloné dans un autre dossier
+git clone git@github.com:PaulCapobianco/EcoRide_Symfony.git EcoRide-Paul-Capobianco
+cd EcoRide-Paul-Capobianco/EcoRide    # adapter si vous avez cloné dans un autre dossier
 
 # Copier la config locale
-cp .env .env.local
-# Éditer .env.local : DATABASE_URL, MAILER_DSN, etc.
+# Copier le modèle d'environnement et remplir vos identifiants locaux
+cp .env.example .env
+# Éditer .env/.env.local : DATABASE_URL, MAILER_DSN, etc.
 
 # Dépendances PHP
 composer install
@@ -74,9 +75,10 @@ L’interface est accessible par défaut sur `http://127.0.0.1:8025`.
 ### Import du dump SQL
 Le dossier `../docs/` (un niveau au-dessus de `EcoRide/`) contient `dump_ecoride.sql` (structure + données).
 ```bash
-mysql -u admin -p'*studi@aksis*' ecoride < ../docs/dump_ecoride.sql
+# Adapter les identifiants MySQL à votre environnement.
+# L’option -p vous demandera le mot de passe (ou utilisez -p'motdepasse').
+mysql -u <user> -p <base> < ../docs/dump_ecoride.sql
 ```
-(l’utilisateur MySQL par défaut sur le projet d’étude est `admin` / `*studi@aksis*`).
 
 Vous devriez maintenant disposer d’un environnement local identique à l’état actuel du site.***
 
