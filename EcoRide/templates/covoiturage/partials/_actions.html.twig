@@ -1,0 +1,42 @@
+<div class="border rounded-3 p-3">
+  <h2 class="h6 mb-3">Participer à ce trajet</h2>
+
+  <p class="text-muted small mb-2">
+    Tarif : <strong>{{ price_credits }} crédit(s)</strong> par personne
+  </p>
+  <p class="text-muted small mb-3">
+    Places restantes : <strong>{{ places_restantes }}</strong>
+  </p>
+
+  {% if app.user %}
+    <p class="text-muted small mb-2">Vos crédits : {{ user_credit ?? 0 }}</p>
+    {% if can_participate %}
+      <form method="post" action="{{ path('covoiturage_participer', { id: covoiturage.id }) }}" class="vstack gap-2">
+        <input type="hidden" name="_token" value="{{ csrf_token('participer_' ~ covoiturage.id) }}">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value="1"
+            id="participation_confirm_{{ covoiturage.id }}"
+            name="confirm"
+            required
+          >
+          <label class="form-check-label" for="participation_confirm_{{ covoiturage.id }}">
+            Je confirme l’utilisation de {{ price_credits }} crédit(s).
+          </label>
+        </div>
+        <button type="submit" class="btn btn-success w-100">Participer</button>
+      </form>
+    {% else %}
+      <div class="alert alert-warning mb-0">
+        {{ participation_reason ?? 'Participation indisponible.' }}
+      </div>
+    {% endif %}
+  {% else %}
+    <div class="alert alert-info">
+      Connectez-vous pour participer à ce trajet.
+    </div>
+    <a href="{{ path('login') }}" class="btn btn-success w-100">Connexion</a>
+  {% endif %}
+</div>

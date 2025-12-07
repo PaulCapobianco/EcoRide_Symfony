@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Incidents covoiturage{% endblock %}
+{% block page_class %}page-admin-incidents{% endblock %}
+
+{% block body %}
+<section class="layout-container py-4">
+  <header class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h4 mb-1">Covoiturages signalés</h1>
+      <p class="text-muted mb-0">Trajets pour lesquels un passager a signalé un problème.</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a href="{{ path('admin_avis_index') }}" class="btn btn-outline-secondary btn-sm">Avis à valider</a>
+    </div>
+  </header>
+
+  {% if reported_participations is empty %}
+    <div class="border rounded-3 p-4 text-center bg-light">
+      <div class="fs-4 mb-2">✔️</div>
+      <p class="mb-1 fw-semibold">Aucun incident signalé</p>
+      <p class="text-muted mb-0">Tout est calme côté trajets.</p>
+    </div>
+  {% else %}
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th># Covoiturage</th>
+            <th>Trajet</th>
+            <th>Dates</th>
+            <th>Conducteur</th>
+            <th>Passager</th>
+            <th>Commentaire</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for participation in reported_participations %}
+            {% set ride = participation.covoiturage %}
+            {% set passenger = participation.utilisateur %}
+            {% set driver = ride.utilisateur %}
+            <tr>
+              <td class="fw-semibold">#{{ ride.id }}</td>
+              <td>
+                <div class="fw-semibold">{{ ride.lieuDepart }} → {{ ride.lieuArrivee }}</div>
+                <div class="text-muted small">
+                  Départ : {{ ride.adresseDepart ?? ride.lieuDepart }}<br>
+                  Arrivée : {{ ride.adresseArrivee ?? ride.lieuArrivee }}
+                </div>
+              </td>
+              <td class="text-muted small">
+                {{ ride.dateDepart|date('d/m/Y') }} à {{ ride.heureDepart|date('H:i') }}<br>
+                {% if ride.dateArrivee %}Arrivée : {{ ride.dateArrivee|date('d/m/Y') }}{% endif %}
+              </td>
+              <td class="text-muted small text-break">
+                {{ driver.pseudo ?? (driver.prenom ~ ' ' ~ driver.nom) }}<br>
+                {{ driver.email }}
+              </td>
+              <td class="text-muted small text-break">
+                {{ passenger.pseudo ?? (passenger.prenom ~ ' ' ~ passenger.nom) }}<br>
+                {{ passenger.email }}
+              </td>
+              <td class="text-break">
+                {{ participation.confirmationComment ?? '—' }}
+              </td>
+              <td style="min-width: 220px;">
+                <form
+                  method="post"
+                  action="{{ path('admin_incident_credit', { id: participation.id }) }}"
+                  class="d-flex flex-column gap-2"
+                >
+                  <div class="input-group input-group-sm">
+                    <input
+                      type="number"
+                      name="amount"
+                      class="form-control"
+                      min="1"
+                      placeholder="Montant"
+                      required
+                    >
+                    <span class="input-group-text">crédits</span>
+                  </div>
+                  <input
+                    type="text"
+                    name="reason"
+                    class="form-control form-control-sm"
+                    placeholder="Note (optionnel)"
+                  >
+                  <input type="hidden" name="_token" value="{{ csrf_token('credit_incident_' ~ participation.id) }}">
+                  <button type="submit" class="btn btn-success btn-sm">Créditer</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

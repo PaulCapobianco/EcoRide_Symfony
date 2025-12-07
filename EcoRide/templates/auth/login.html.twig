@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Connexion{% endblock %}
+
+{% block page_class %}page-auth page-auth--login{% endblock %}
+
+{% block body %}
+  <section class="layout-container">
+    <div class="auth-card">
+      <h1 class="auth-title">Connexion</h1>
+
+      <p class="text-muted small d-flex align-items-center mb-3">
+        <i class="bi bi-coin me-2 text-success fs-4" aria-hidden="true"></i>
+        <span>
+          Nouvel utilisateur ?
+          À la création de votre compte, EcoRide vous offre
+          <strong>20 crédits</strong> pour réserver vos premiers trajets.
+        </span>
+      </p>
+
+      {% if error %}
+        <div class="alert alert-danger mb-3">
+          {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+      {% endif %}
+
+      {{ form_start(form, {
+        action: path('login'),
+        attr: {
+          class: 'row g-3 needs-validation',
+          novalidate: 'novalidate'
+        }
+      }) }}
+        {{ form_row(form._username) }}
+        {{ form_row(form._password) }}
+
+        <div class="col-12 auth-actions">
+          <a href="{{ path('forgot_password') }}" class="auth-forgot">Mot de passe oublié&nbsp;?</a>
+
+          <button type="submit" class="btn btn-success auth-submit">
+            Connexion
+          </button>
+        </div>
+
+        <div class="col-12 create-wrap">
+          <a class="btn btn-outline-secondary d-inline-flex align-items-center gap-1" href="{{ path('register') }}">
+            <i class="bi bi-person-plus" aria-hidden="true"></i>
+            <span>Créer un compte</span>
+          </a>
+        </div>
+      {{ form_end(form) }}
+    </div>
+  </section>
+{% endblock %}

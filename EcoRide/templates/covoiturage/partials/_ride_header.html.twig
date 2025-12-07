@@ -1,0 +1,40 @@
+{% set remaining = covoiturage.nbPlace ?? 0 %}
+{% set status = covoiturage.statut ?? 'OUVERT' %}
+{% if status in ['OUVERT', ''] and remaining <= 0 %}
+  {% set status = 'COMPLET' %}
+{% endif %}
+{% set badgeClass =
+  status == 'OUVERT' ? 'bg-success' :
+  (status == 'COMPLET' ? 'bg-secondary' :
+  (status == 'ANNULE' ? 'bg-danger' :
+  (status == 'EN_COURS' ? 'bg-primary' :
+  (status == 'TERMINE' ? 'bg-info text-dark' : 'bg-outline-secondary'))))
+%}
+
+<div class="ride-detail__hero border rounded-3 p-3 p-md-4 mb-3">
+  <div class="d-flex flex-wrap justify-content-between gap-2 align-items-center mb-2">
+    <div>
+      <h1 class="h4 mb-1">{{ covoiturage.lieuDepart }} → {{ covoiturage.lieuArrivee }}</h1>
+      <div class="text-muted small">
+        {{ covoiturage.dateDepart|date('d/m/Y') }}
+        ·
+        {{ covoiturage.heureDepart ? covoiturage.heureDepart|date('H:i') : '--:--' }}
+        {% if covoiturage.heureArrivee %}
+          — {{ covoiturage.heureArrivee|date('H:i') }}
+        {% endif %}
+        {% if duration_text %}
+          · Durée estimée : {{ duration_text }}
+        {% endif %}
+      </div>
+    </div>
+    <span class="badge {{ badgeClass }}">{{ status|upper }}</span>
+  </div>
+
+  <div class="d-flex flex-wrap align-items-center gap-2">
+    <span class="badge bg-dark">{{ price_credits }} crédit(s)/pers.</span>
+    <span class="badge bg-secondary">{{ places_restantes }} place(s) restante(s)</span>
+    {% if is_eco %}
+      <span class="badge bg-success">EcoRider</span>
+    {% endif %}
+  </div>
+</div>

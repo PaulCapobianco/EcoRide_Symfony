@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Mes avis de trajets{% endblock %}
+{% block page_class %}page-profile-feedback{% endblock %}
+
+{% block body %}
+<section class="layout-container py-5">
+  <header class="mb-4">
+    <h1 class="h4 mb-1">Avis sur mes trajets</h1>
+    <p class="text-muted mb-2">
+      Confirmez que tout s’est bien passé ou signalez un problème sur vos trajets terminés.
+    </p>
+    <div class="alert alert-success small mb-0">
+      Vos réponses sont envoyées à un employé pour validation. Le conducteur est crédité après validation, ou après résolution en cas de problème signalé.
+    </div>
+  </header>
+
+  {% if participations is empty %}
+    <div class="border rounded-3 p-4 text-center bg-light">
+      <div class="fs-4 mb-2">✔️</div>
+      <p class="mb-1 fw-semibold">Aucun avis en attente</p>
+      <p class="text-muted mb-0">Vous n’avez pas de trajets à valider pour le moment.</p>
+    </div>
+  {% else %}
+    <div class="vstack gap-3">
+      {% for participation in participations %}
+        {% set ride = participation.covoiturage %}
+        <article class="border rounded-3 p-3">
+          <header class="mb-2">
+            <h2 class="h6 mb-0">
+              {{ ride.lieuDepart }} → {{ ride.lieuArrivee }}
+            </h2>
+          </header>
+          <div class="d-flex justify-content-between flex-wrap gap-2">
+            <div class="flex-grow-1">
+              <div class="text-muted">
+                {{ ride.dateDepart|date('d/m/Y') }} à {{ ride.heureDepart|date('H:i') }}
+              </div>
+              <div class="text-muted small">
+                {{ participation.nbPlaces }} place(s) réservée(s) · {{ ride.prixPersonne }} crédit(s)/pers.
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3 mt-3">
+            <div class="col-12 col-md-6">
+              <form
+                method="post"
+                action="{{ path('covoiturage_participation_confirmer', { id: participation.id }) }}"
+                class="d-flex flex-column gap-2"
+              >
+                <input type="hidden" name="_token" value="{{ csrf_token('confirmer_participation_' ~ participation.id) }}">
+                <label class="form-label text-muted small mb-0">
+                  Note (0-5)
+                  <select name="note" class="form-select form-select-sm w-auto d-inline-block">
+                    <option value="">--</option>
+                    {% for i in 0..5 %}
+                      <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                  </select>
+                </label>
+                <textarea
+                  name="comment"
+                  class="form-control form-control-sm"
+                  rows="3"
+                  placeholder="Votre retour (optionnel)"
+                ></textarea>
+                <button type="submit" class="btn btn-sm btn-success">
+                  Tout s’est bien passé
+                </button>
+              </form>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <form
+                method="post"
+                action="{{ path('covoiturage_participation_signaler', { id: participation.id }) }}"
+                class="d-flex flex-column gap-2"
+              >
+                <input type="hidden" name="_token" value="{{ csrf_token('signaler_participation_' ~ participation.id) }}">
+                <label class="form-label text-muted small mb-0">
+                  Note (0-5)
+                  <select name="note" class="form-select form-select-sm w-auto d-inline-block">
+                    <option value="">--</option>
+                    {% for i in 0..5 %}
+                      <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                  </select>
+                </label>
+                <textarea
+                  name="comment"
+                  class="form-control form-control-sm"
+                  rows="3"
+                  placeholder="Décrivez le problème (optionnel)"
+                ></textarea>
+                <button type="submit" class="btn btn-sm btn-outline-warning">
+                  Signaler un problème
+                </button>
+              </form>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

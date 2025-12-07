@@ -1,0 +1,224 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Accueil{% endblock %}
+
+{% block page_class %}page--no-offset{% endblock %}
+
+{% block body %}
+
+  <header class="hero" aria-label="Hero EcoRide">
+    <div class="layout-container hero__content">
+      <h1 class="hero__title">
+        <span class="word-eco">Eco</span><span class="word-ride">Ride</span>
+      </h1>
+      <p class="hero__subtitle">Roulez ensemble, respirez mieux</p>
+    </div>
+  </header>
+
+  <section class="search-bar" aria-label="Recherche de covoiturage">
+    <div class="layout-container">
+      <div class="search-card">
+        <h2 class="search-title">Rechercher un covoiturage</h2>
+
+        <form
+          class="search-form"
+          action="{{ path('covoiturages') }}"
+          method="get"
+          role="search"
+          data-controller="swap"
+        >
+          <div class="search-form__fields">
+            <div class="mb-3">
+              <label for="from" class="form-label">Ville de départ</label>
+              <input
+                type="text"
+                id="from"
+                name="from"
+                class="form-control"
+                placeholder="Paris, Lille..."
+                autocomplete="off"
+                data-swap-target="from"
+              >
+            </div>
+
+            <button
+              type="button"
+              class="swap-btn"
+              id="swapCities"
+              aria-label="Inverser départ et arrivée"
+              title="Inverser"
+              data-action="swap#invert"
+            >
+              <i class="bi bi-arrow-left-right" aria-hidden="true"></i>
+            </button>
+
+            <div class="mb-3">
+              <label for="to" class="form-label">Ville d'arrivée</label>
+              <input
+                type="text"
+                id="to"
+                name="to"
+                class="form-control"
+                placeholder="Marseille, Lyon..."
+                autocomplete="off"
+                data-swap-target="to"
+              >
+            </div>
+
+            <div class="mb-3">
+              <label for="date" class="form-label">Date de départ</label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                class="form-control"
+              >
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 justify-content-start mt-2">
+            <button type="submit" class="btn btn-success">
+              Rechercher
+            </button>
+            <a href="{{ path('home') }}" class="btn btn-outline-secondary">
+              Réinitialiser
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature feature--objectives" aria-labelledby="objectifs-title">
+    <div class="layout-container grid-2">
+      <div class="feature__image">
+        <img
+          src="{{ asset('./img/objectif.jpg') }}"
+          alt="Illustration covoiturage écoresponsable"
+        >
+      </div>
+      <div class="feature__content">
+        <h2 class="section-title" id="objectifs-title">Nos Objectifs</h2>
+        <p>
+          EcoRide réduit l’impact des déplacements en facilitant le covoiturage en voiture.
+          Nous remplissons les sièges vides pour limiter les émissions.
+          Une solution simple, économique et plus respectueuse de l’environnement.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature feature--trust" aria-labelledby="trust-title">
+    <div class="layout-container grid-2 grid-2--reverse">
+      <div class="feature__content">
+        <h2 class="section-title" id="trust-title">Conducteurs vérifiés, trajets sereins</h2>
+        <p>
+          Chez EcoRide, la confiance passe avant tout. Chaque conducteur valide une vérification de profil
+          avant de proposer un trajet. Voyagez l’esprit léger : nous appliquons des critères clairs de qualité
+          et de sécurité pour tous.
+        </p>
+      </div>
+      <div class="feature__image">
+        <img
+          src="{{ asset('./img/conducteur.jpg') }}"
+          alt="Conducteur vérifié et sécurisé"
+        >
+      </div>
+    </div>
+  </section>
+
+  <section class="rides" aria-labelledby="rides-title">
+    <div class="layout-container">
+      <h2 class="section-title" id="rides-title">Derniers trajets proposés</h2>
+
+      <div class="table-wrapper">
+        <table class="rides__table" id="ridesTable" data-limit="3">
+          <thead class="text-center">
+            <tr>
+              <th scope="col">Trajet</th>
+              <th scope="col">Statut</th>
+              <th scope="col">Crédit(s) par personne</th>
+              <th scope="col">Conducteur</th>
+              <th scope="col">Place(s) restante(s)</th>
+              <th scope="col">Détails</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if lastRides is empty %}
+              <tr>
+                <td colspan="6" class="text-muted text-center">
+                  Aucun trajet n'est disponible pour le moment.
+                </td>
+              </tr>
+            {% else %}
+              {% for ride in lastRides %}
+                {% set conducteur = ride.utilisateur %}
+                {% set priceCredits = ride.prixPersonne|round(0, 'ceil') %}
+                {% set remaining = ride.nbPlace ?? 0 %}
+                {% set status = ride.statut ?? 'OUVERT' %}
+                {% if status in ['OUVERT', ''] and remaining <= 0 %}
+                  {% set status = 'COMPLET' %}
+                {% endif %}
+                {% set badgeClass =
+                  status == 'OUVERT' ? 'bg-success' :
+                  (status == 'COMPLET' ? 'bg-secondary' :
+                  (status == 'ANNULE' ? 'bg-danger' :
+                  (status == 'EN_COURS' ? 'bg-primary' :
+                  (status == 'TERMINE' ? 'bg-info text-dark' : 'bg-outline-secondary'))))
+                %}
+                {% set participation_allowed = status in ['OUVERT'] and remaining > 0 %}
+                <tr class="align-middle">
+                  <td class="align-middle">
+                    <strong>{{ ride.lieuDepart }} → {{ ride.lieuArrivee }}</strong><br>
+                    <span class="text-muted small">
+                      {{ ride.dateDepart|date('d/m/Y') }}
+                      ·
+                      {{ ride.heureDepart ? ride.heureDepart|date('H:i') : '--:--' }}
+                      {% if ride.heureArrivee %}
+                        — {{ ride.heureArrivee|date('H:i') }}
+                      {% endif %}
+                    </span>
+                  </td>
+                  <td class="text-center align-middle">
+                    <span class="badge {{ badgeClass }}">
+                      {{ status|upper }}
+                    </span>
+                  </td>
+                  <td class="text-center align-middle">
+                    <span class="badge bg-dark">
+                      {{ priceCredits }} crédit(s)
+                    </span>
+                  </td>
+                  <td class="text-center align-middle">
+                    {% if conducteur %}
+                      {{ conducteur.prenom }} {{ conducteur.nom }}
+                    {% else %}
+                      Conducteur
+                    {% endif %}
+                  </td>
+                  <td class="text-center align-middle">{{ remaining }}</td>
+                  <td class="text-center align-middle">
+                    {% if participation_allowed %}
+                      <a
+                        class="btn btn-outline-primary btn-sm"
+                        href="{{ path('covoiturage_detail', {id: ride.id}) }}"
+                      >
+                        Détail
+                      </a>
+                    {% else %}
+                      <button class="btn btn-outline-secondary btn-sm" disabled>
+                        Indisponible
+                      </button>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+/* =======================================================================
+   Page : Auth
+======================================================================= */
+.page-auth{
+  display: grid;
+  place-items: center;
+  padding: clamp(24px, 6vh, 64px) 16px;
+}
+.page-auth .auth-card{
+  width: 100%;
+  max-width: 640px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.06), 0 2px 8px rgba(0,0,0,.04);
+  padding: 24px 24px 20px;
+  margin: 0 auto;
+}
+.auth-title{
+  margin: 0 0 16px;
+  text-align: center;
+  font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.6rem);
+  color: #374151;
+  font-weight: 700;
+  font-style: normal;
+}
+.page-auth .form-label{
+  color:#374151;
+  font-weight:600;
+}
+.page-auth .form-control{
+  min-height: 44px;
+}
+.auth-submit{
+  height: 44px;
+}
+.auth-forgot,
+.auth-create{
+  color: var(--nav-green);
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth-forgot:hover,
+.auth-create:hover{
+  text-decoration: underline;
+}
+.page-auth .auth-actions{
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+}
+.page-auth--login .create-wrap{
+  display:flex;
+  justify-content:flex-end;
+}

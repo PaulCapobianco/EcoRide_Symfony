@@ -1,0 +1,26 @@
+/* =======================================================================
+   Page : Vehicle
+======================================================================= */
+.page-vehicle .form-card{
+  width: 100%;
+  max-width: 720px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.06), 0 2px 8px rgba(0,0,0,.04);
+  margin: 20px auto 46px;
+}
+.page-vehicle .page-title{
+  margin: 0 0 6px;
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  color: var(--brand);
+  font-style: normal;
+  font-family: "MerriweatherEco", serif;
+}
+.page-vehicle .form-label{
+  font-weight: 700;
+  color: var(--nav-green);
+}
+.page-vehicle .form-text{
+  color: #6b7280;
+  font-size: .9rem;
+}

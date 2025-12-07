@@ -1,0 +1,212 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Covoiturage{% endblock %}
+
+{% block body %}
+
+    <section class="search-bar" aria-label="Recherche de covoiturage">
+      <div class="layout-container">
+        <div class="search-card">
+          <h1 class="section-title">Rechercher un covoiturage</h1>
+
+          <form
+            class="search-form"
+            action="{{ path('covoiturages') }}"
+            method="get"
+            role="search"
+            data-controller="swap"
+          >
+            <div class="search-form__fields">
+              <div class="mb-3">
+                <label for="from" class="form-label">Ville de départ</label>
+                <input
+                  type="text"
+                  id="from"
+                  name="from"
+                  class="form-control"
+                  placeholder="Paris, Lille..."
+                  autocomplete="off"
+                  value="{{ filters.from ?? '' }}"
+                  data-swap-target="from"
+                >
+              </div>
+
+              <button
+                type="button"
+                class="swap-btn"
+                id="swapCities"
+                aria-label="Inverser départ et arrivée"
+                title="Inverser"
+                data-action="swap#invert"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M7 7h10M7 7l2.5-2.5M7 7l2.5 2.5M17 17H7M17 17l-2.5-2.5M17 17l-2.5 2.5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </button>
+
+              <div class="mb-3">
+                <label for="to" class="form-label">Ville d'arrivée</label>
+                <input
+                  type="text"
+                  id="to"
+                  name="to"
+                  class="form-control"
+                  placeholder="Marseille, Lyon..."
+                  autocomplete="off"
+                  value="{{ filters.to ?? '' }}"
+                  data-swap-target="to"
+                >
+              </div>
+
+              <div class="mb-3">
+                <label for="date" class="form-label">Date de départ</label>
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  class="form-control"
+                  value="{{ filters.date ?? '' }}"
+                >
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 justify-content-start mt-2">
+              <button type="submit" class="btn btn-success">
+                Rechercher
+              </button>
+              <a href="{{ path('covoiturages') }}" class="btn btn-outline-secondary">
+                Réinitialiser
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="rides" aria-labelledby="rides-title">
+      <div class="layout-container">
+        <div class="row g-4">
+          {% include 'covoiturage/partials/_filters.html.twig' with { filters: filters } %}
+
+          <div class="col-lg-9">
+            <h2 class="section-title" id="rides-title">
+              Résultats
+              {% if total is defined %}
+                <span class="text-muted h6 ms-2">({{ total }} trajet(s) trouvé(s))</span>
+              {% endif %}
+            </h2>
+
+            {% if rides is empty %}
+              <p class="text-muted mt-3">
+                Aucun covoiturage ne correspond à votre recherche pour le moment.
+              </p>
+
+              {% if next_date_suggestion is defined and next_date_suggestion %}
+                <div class="alert alert-info mt-3">
+                  <p class="mb-2">
+                    Le premier covoiturage disponible pour ce trajet est le
+                    <strong>{{ next_date_suggestion|date('d/m/Y') }}</strong>.
+                  </p>
+                  <a
+                    href="{{ path('covoiturages', {
+                      from: filters.from ?? null,
+                      to: filters.to ?? null,
+                      date: next_date_suggestion|date('Y-m-d'),
+                      eco: filters.eco ? 1 : null,
+                      price_max: filters.price_max ?? null,
+                      duration_max: filters.duration_max ?? null,
+                      rating_min: filters.rating_min ?? null
+                    }) }}"
+                    class="btn btn-sm btn-primary"
+                  >
+                    Voir les trajets à cette date
+                  </a>
+                </div>
+              {% endif %}
+            {% else %}
+              <div class="rides-grid row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+                {% for ride in rides %}
+                  <div class="col">
+                    {% include 'covoiturage/partials/_ride_card.html.twig' with { ride: ride, ratings: ratings } %}
+                  </div>
+                {% endfor %}
+              </div>
+
+              {% if total_pages is defined and total_pages > 1 %}
+                {% set baseParams = {
+                  from: filters.from ?? null,
+                  to: filters.to ?? null,
+                  date: filters.date ?? null,
+                  eco: filters.eco ?? null,
+                  price_max: filters.price_max ?? null,
+                  duration_max: filters.duration_max ?? null,
+                  rating_min: filters.rating_min ?? null
+                } %}
+
+                <nav class="mt-4" aria-label="Pagination des trajets">
+                  <ul class="pagination justify-content-center flex-wrap gap-2 mb-0">
+
+                    {% if page <= 1 %}
+                      <li class="page-item disabled" aria-disabled="true">
+                        <span class="page-link">Précédent</span>
+                      </li>
+                    {% else %}
+                      <li class="page-item">
+                        <a
+                          class="page-link"
+                          href="{{ path('covoiturages', baseParams|merge({'page': page - 1})) }}"
+                          rel="prev"
+                        >
+                          Précédent
+                        </a>
+                      </li>
+                    {% endif %}
+
+                    {% for p in 1..total_pages %}
+                      {% if p == page %}
+                        <li class="page-item active" aria-current="page">
+                          <span class="page-link">{{ p }}</span>
+                        </li>
+                      {% else %}
+                        <li class="page-item">
+                          <a
+                            class="page-link"
+                            href="{{ path('covoiturages', baseParams|merge({'page': p})) }}"
+                          >
+                            {{ p }}
+                          </a>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+
+                    {% if page >= total_pages %}
+                      <li class="page-item disabled" aria-disabled="true">
+                        <span class="page-link">Suivant</span>
+                      </li>
+                    {% else %}
+                      <li class="page-item">
+                        <a
+                          class="page-link"
+                          href="{{ path('covoiturages', baseParams|merge({'page': page + 1})) }}"
+                          rel="next"
+                        >
+                          Suivant
+                        </a>
+                      </li>
+                    {% endif %}
+                  </ul>
+                </nav>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

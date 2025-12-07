@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Trajet {{ covoiturage.lieuDepart }} → {{ covoiturage.lieuArrivee }}{% endblock %}
+{% block page_class %}page-ride-detail{% endblock %}
+
+{% block body %}
+  <section class="layout-container py-4">
+    {% include 'covoiturage/partials/_ride_header.html.twig' with {
+      covoiturage: covoiturage,
+      duration_text: duration_text,
+      places_restantes: places_restantes,
+      price_credits: price_credits,
+      is_eco: is_eco
+    } %}
+
+    <div class="row g-4 mt-2">
+      <div class="col-lg-8">
+        {% include 'covoiturage/partials/_driver.html.twig' with {
+          covoiturage: covoiturage,
+          driver: driver,
+          voiture: voiture,
+          rating_avg: rating_avg,
+          rating_count: rating_count
+        } %}
+
+        {% include 'covoiturage/partials/_preferences.html.twig' with {
+          preferences: preferences,
+          is_eco: is_eco
+        } %}
+
+        {% include 'covoiturage/partials/_avis.html.twig' with {
+          avis_list: avis_list,
+          rating_avg: rating_avg,
+          rating_count: rating_count
+        } %}
+      </div>
+
+      <div class="col-lg-4">
+        {% include 'covoiturage/partials/_actions.html.twig' with {
+          covoiturage: covoiturage,
+          places_restantes: places_restantes,
+          price_credits: price_credits,
+          can_participate: can_participate,
+          participation_reason: participation_reason,
+          user_credit: user_credit
+        } %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Publier un trajet{% endblock %}
+{% block page_class %}page-ride-publish{% endblock %}
+
+{% block body %}
+  <section class="search-bar" aria-label="Publier un trajet">
+    <div class="layout-container">
+      <div class="search-card">
+        <h1 class="section-title mb-3">Publier un trajet</h1>
+
+        <p class="text-success fw-semibold fs-6 mb-3">
+          Saisissez votre trajet en tant que conducteur : ville et adresse de départ / arrivée,
+          nombre de places et prix par personne. Pour chaque trajet, <strong>2 crédits</strong> sont conservés par la plateforme
+          pour assurer son bon fonctionnement. Pensez à en tenir compte dans le prix que vous fixez.
+        </p>
+
+        {{ form_start(form, {
+          action: path('covoiturage_publish'),
+          attr: {
+            class: 'row g-4'
+          }
+        }) }}
+
+          <div class="col-12">
+            <h2 class="h5 mb-2">Itinéraire</h2>
+            <div class="row g-3">
+
+              {{ form_row(form.from, {
+                row_attr: { class: 'col-12 col-md-5' }
+              }) }}
+
+              {{ form_row(form.fromAddress, {
+                row_attr: { class: 'col-12 col-md-7' }
+              }) }}
+
+              {{ form_row(form.to, {
+                row_attr: { class: 'col-12 col-md-5' }
+              }) }}
+
+              {{ form_row(form.toAddress, {
+                row_attr: { class: 'col-12 col-md-7' }
+              }) }}
+
+              {{ form_row(form.date, {
+                row_attr: { class: 'col-12 col-md-3' }
+              }) }}
+
+              {{ form_row(form.timeStart, {
+                row_attr: { class: 'col-6 col-md-3' }
+              }) }}
+
+              {{ form_row(form.timeEnd, {
+                row_attr: { class: 'col-6 col-md-3' }
+              }) }}
+
+            </div>
+          </div>
+
+          <div class="col-12">
+            <h2 class="h5 mb-2">Détails</h2>
+            <div class="row g-3">
+
+              {{ form_row(form.vehicle, {
+                row_attr: { class: 'col-12 col-md-6' }
+              }) }}
+
+              {{ form_row(form.seats, {
+                row_attr: { class: 'col-6 col-md-3' }
+              }) }}
+
+              {{ form_row(form.price, {
+                row_attr: { class: 'col-6 col-md-3' }
+              }) }}
+            </div>
+          </div>
+
+          <div class="col-12">
+            {{ form_row(form.terms) }}
+
+            <button type="submit" class="btn btn-success">
+              Publier le trajet
+            </button>
+          </div>
+
+        {{ form_end(form) }}
+      </div>
+    </div>
+  </section>
+{% endblock %}

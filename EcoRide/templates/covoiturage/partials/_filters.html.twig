@@ -1,0 +1,97 @@
+<aside class="col-lg-3">
+  <button class="btn btn-outline-secondary w-100 d-lg-none mb-2"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#filtersCollapse"
+          aria-expanded="false"
+          aria-controls="filtersCollapse">
+    Afficher / masquer les filtres
+  </button>
+
+  <div class="filter-card collapse d-lg-block" id="filtersCollapse">
+    <h2 class="h5 mb-3">Filtres</h2>
+
+    <form action="{{ path('covoiturages') }}" method="get">
+      <input type="hidden" name="from" value="{{ filters.from ?? '' }}">
+      <input type="hidden" name="to" value="{{ filters.to ?? '' }}">
+      <input type="hidden" name="date" value="{{ filters.date ?? '' }}">
+
+      <div class="mb-3 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="filterEco"
+          name="eco"
+          value="1"
+          {% if filters.eco %}checked{% endif %}
+        >
+        <label class="form-check-label" for="filterEco">
+          Trajets éco uniquement
+        </label>
+      </div>
+
+      <div class="mb-3">
+        <label for="filterPrice" class="form-label d-flex justify-content-between">
+          <span>Crédit(s) max</span>
+          <span id="priceValue" class="filter-value">
+            {{ filters.price_max ?? 25 }} crédit(s)
+          </span>
+        </label>
+        <input
+          type="range"
+          class="form-range"
+          id="filterPrice"
+          name="price_max"
+          min="5"
+          max="50"
+          step="1"
+          value="{{ filters.price_max ?? 25 }}"
+        >
+      </div>
+
+      <div class="mb-3">
+        <label for="filterDuration" class="form-label d-flex justify-content-between">
+          <span>Durée max (h)</span>
+          <span id="durationValue" class="filter-value">
+            {{ filters.duration_max ?? 4 }} h
+          </span>
+        </label>
+        <input
+          type="range"
+          class="form-range"
+          id="filterDuration"
+          name="duration_max"
+          min="1"
+          max="8"
+          step="1"
+          value="{{ filters.duration_max ?? 4 }}"
+        >
+      </div>
+
+      <div class="mb-3">
+        <label for="filterRating" class="form-label">Note minimale</label>
+        <select id="filterRating" name="rating_min" class="form-select">
+          <option value="" {% if not filters.rating_min %}selected{% endif %}>Toutes</option>
+          <option value="3" {% if filters.rating_min == 3 %}selected{% endif %}>★ 3 et +</option>
+          <option value="4" {% if filters.rating_min == 4 %}selected{% endif %}>★ 4 et +</option>
+          <option value="4.5" {% if filters.rating_min == 4.5 %}selected{% endif %}>★ 4.5 et +</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100 mb-2">
+        Appliquer les filtres
+      </button>
+
+      <a
+        href="{{ path('covoiturages', {
+          from: filters.from ?? null,
+          to: filters.to ?? null,
+          date: filters.date ?? null
+        }) }}"
+        class="btn btn-outline-secondary w-100"
+      >
+        Réinitialiser les filtres
+      </a>
+    </form>
+  </div>
+</aside>

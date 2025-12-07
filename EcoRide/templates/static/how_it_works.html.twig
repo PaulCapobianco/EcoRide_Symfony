@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Comment ça marche{% endblock %}
+
+{% block page_class %}page--centerY{% endblock %}
+
+{% block body %}
+
+  <section id="passager" class="how-section is-active" aria-labelledby="how-passager-title">
+    <div class="layout-container">
+      <div class="how-intro">
+        <h2 class="how-title" id="how-passager-title">Vous cherchez un trajet&nbsp;?</h2>
+        <p class="how-lead">
+          Trouvez un conducteur et voyagez à petit prix, facilement et en toute sécurité.
+        </p>
+        <a href="#conducteur" class="how-switch" data-target="conducteur">Je suis conducteur&nbsp;!</a>
+      </div>
+
+      <div class="how-grid">
+        <article class="how-card">
+          <img class="how-icon"
+               src="{{ asset('img/trouvez-votre-trajet.png') }}"
+               alt="Rechercher un trajet">
+          <h3 class="how-step">Trouvez votre trajet</h3>
+          <p>Indiquez votre point de départ et votre destination.</p>
+        </article>
+
+        <article class="how-card">
+          <img class="how-icon"
+               src="{{ asset('img/payer-en-ligne.png') }}"
+               alt="Réserver et payer en ligne">
+          <h3 class="how-step">Réservez et payez en ligne</h3>
+          <p>Réservez votre place en quelques clics. Paiement sécurisé.</p>
+        </article>
+
+        <article class="how-card">
+          <img class="how-icon"
+               src="{{ asset('img/voyager-ensemble.png') }}"
+               alt="Voyager ensemble en covoiturage">
+          <h3 class="how-step">Voyagez ensemble</h3>
+          <p>Partagez les frais et profitez du trajet.</p>
+        </article>
+
+        <article class="how-card">
+          <img class="how-icon"
+               src="{{ asset('img/evaluer-conducteur.png') }}"
+               alt="Évaluer votre expérience de trajet">
+          <h3 class="how-step">Évaluez votre expérience</h3>
+          <p>Laissez un avis après chaque trajet pour la communauté.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="conducteur" class="how-section" aria-labelledby="how-conducteur-title">
+    <div class="layout-container">
+      <div class="how-intro">
+        <h2 class="how-title" id="how-conducteur-title">Vous partez en voiture&nbsp;?</h2>
+        <p class="how-lead">
+          Proposez votre trajet&nbsp;: rendez service et rentabilisez votre déplacement.
+        </p>
+        <a href="#passager" class="how-switch" data-target="passager">Je suis passager&nbsp;!</a>
+      </div>
+
+      <div class="how-grid">
+        <article class="how-card">
+          <img class="how-icon"
+               src="{{ asset('img/publier-trajet.png') }}"
+               alt="Publier un trajet">
+          <h3 class="how-step">Publiez votre trajet</h3>
+          <p>
+            Précisez destination, départ et horaires. Choisissez un trajet qui vous convient.
+            Vous pouvez proposer un point de départ/arrivée précis avec un tarif souhaité.
+          </p>
+        </article>
+
+        <article class="how-card">
+          <img class="how-icon"
+               src="{{ asset('img/trouvez-passager.png') }}"
+               alt="Trouver des passagers">
+          <h3 class="how-step">Trouvez des passagers</h3>
+          <p>
+            Les réservations se font en ligne (mobile money). Vous êtes averti par mail et SMS.
+          </p>
+        </article>
+
+        <article class="how-card">
+          <img class="how-icon"
+               src="{{ asset('img/voyager-ensemble.png') }}"
+               alt="Voyager ensemble">
+          <h3 class="how-step">Voyagez ensemble</h3>
+          <p>
+            Partagez votre trajet en toute sécurité : convivial, économique et écologique.
+          </p>
+        </article>
+
+        <article class="how-card">
+          <img class="how-icon"
+               src="{{ asset('img/recevez-paiement.png') }}"
+               alt="Recevoir le paiement">
+          <h3 class="how-step">Recevez votre paiement</h3>
+          <p>
+            À la fin du trajet, nous déclenchons automatiquement le virement de vos gains
+            vers votre compte bancaire.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

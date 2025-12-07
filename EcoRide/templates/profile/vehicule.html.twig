@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  EcoRide — {% if is_edit %}Modifier un véhicule{% else %}Ajouter un véhicule{% endif %}
+{% endblock %}
+
+{% block page_class %}page-profile{% endblock %}
+
+{% block body %}
+  <div class="layout-container profile-wrap mt-3">
+    <h1 class="visually-hidden">
+      {% if is_edit %}Gestion d’un véhicule{% else %}Ajout d’un véhicule{% endif %}
+    </h1>
+    <div class="settings-content">
+
+      <section class="settings-section card profile-card">
+        <div class="card-body">
+          <div class="card-title-row mb-3">
+            <h2 class="card-title mb-0">
+              {% if is_edit %}
+                Modifier un véhicule
+              {% else %}
+                Ajouter un véhicule
+              {% endif %}
+            </h2>
+          </div>
+
+          {{ form_start(form) }}
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                {{ form_row(form.marque) }}
+              </div>
+              <div class="col-12 col-md-6">
+                {{ form_row(form.modele) }}
+              </div>
+
+              <div class="col-12 col-md-6">
+                {{ form_row(form.couleur) }}
+              </div>
+
+              <div class="col-12 col-md-6">
+                {{ form_row(form.immatriculation) }}
+              </div>
+
+              <div class="col-12 col-md-6">
+                {{ form_row(form.energie) }}
+              </div>
+
+              <div class="col-12 col-md-6">
+                {{ form_row(form.datePremiereImmatriculation) }}
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <a href="{{ path('profile', {'_fragment': 'section-vehicules'}) }}" class="btn btn-outline-secondary btn-sm">
+                Annuler
+              </a>
+              <button type="submit" class="btn btn-success btn-sm">
+                {% if is_edit %}
+                  Enregistrer les modifications
+                {% else %}
+                  Ajouter le véhicule
+                {% endif %}
+              </button>
+            </div>
+          {{ form_end(form) }}
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+{% endblock %}

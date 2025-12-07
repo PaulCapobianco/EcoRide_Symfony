@@ -1,0 +1,50 @@
+<section
+  id="section-preferences"
+  class="settings-section card profile-card"
+  data-requires="driver"
+  {% if user.profilType == 'passenger' %}hidden{% endif %}
+>
+  <div class="card-body">
+    <div class="card-title-row">
+      <h2 class="card-title mb-0">Préférences conducteur</h2>
+      <a
+        href="{{ path('profile_preferences') }}"
+        class="btn btn-outline-secondary btn-sm"
+      >
+        Modifier
+      </a>
+    </div>
+
+    <div class="pref-list">
+      <span class="btn btn-sm {{ prefs.builtins.music ? 'btn-success' : 'btn-outline-secondary' }}" aria-disabled="true">
+        Musique
+      </span>
+      <span class="btn btn-sm {{ prefs.builtins.ac ? 'btn-success' : 'btn-outline-secondary' }}" aria-disabled="true">
+        Climatisation
+      </span>
+      <span class="btn btn-sm {{ prefs.builtins.pets ? 'btn-success' : 'btn-outline-secondary' }}" aria-disabled="true">
+        Animaux
+      </span>
+      <span class="btn btn-sm {{ prefs.builtins.baggage ? 'btn-success' : 'btn-outline-secondary' }}" aria-disabled="true">
+        Bagages volumineux
+      </span>
+      <span class="btn btn-sm {{ prefs.builtins.noSmoking ? 'btn-success' : 'btn-outline-secondary' }}" aria-disabled="true">
+        Non-fumeur
+      </span>
+    </div>
+
+    {% if prefs.custom is not empty %}
+      <div class="pref-list mt-2">
+        {% for customPref in prefs.custom %}
+          <span class="btn btn-sm btn-success" aria-disabled="true">
+            {{ customPref.label }}
+          </span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <small class="text-muted d-block mt-2">
+      Ces préférences apparaissent sur vos annonces conducteur.
+    </small>
+  </div>
+</section>

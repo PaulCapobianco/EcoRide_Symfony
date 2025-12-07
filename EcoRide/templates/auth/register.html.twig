@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Créer un compte{% endblock %}
+
+{% block page_class %}
+  page-auth d-flex align-items-start align-items-md-center justify-content-center py-4 py-md-5
+{% endblock %}
+
+{% block body %}
+  <section class="layout-container">
+    <div class="auth-card w-100">
+      <h1 class="auth-title">Créer un compte</h1>
+      <p class="text-center text-muted mb-2">
+        Rejoignez la communauté EcoRide 🌿
+      </p>
+
+      <div class="alert alert-success d-flex align-items-center justify-content-center mb-4" role="status">
+        <i class="bi bi-coin me-2 text-success fs-4" aria-hidden="true"></i>
+        <div>
+          À la création de votre compte, EcoRide vous offre
+          <strong>20 crédits</strong> pour réserver vos premiers trajets.
+        </div>
+      </div>
+
+      {{ form_start(form, {
+        action: path('register'),
+        attr: {
+          class: 'needs-validation row g-3',
+          novalidate: 'novalidate',
+          autocomplete: 'on'
+        }
+      }) }}
+
+        <p class="small text-muted mb-3">
+          Les champs principaux sont obligatoires.
+        </p>
+
+        {% if form_errors(form) is not empty %}
+          <div class="col-12">
+            <div class="alert alert-danger">
+              {{ form_errors(form) }}
+            </div>
+          </div>
+        {% endif %}
+
+        {{ form_row(form.lastname) }}
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.phone) }}
+        {{ form_row(form.birthdate) }}
+        {{ form_row(form.address) }}
+        {{ form_row(form.zip) }}
+        {{ form_row(form.city) }}
+        {{ form_row(form.password) }}
+        {{ form_row(form.terms) }}
+
+        <div class="col-12">
+          <button type="submit" class="btn btn-success w-100">
+            Créer mon compte
+          </button>
+        </div>
+
+        <div class="col-12 text-center">
+          <p class="mb-0 mt-2">
+            Déjà inscrit ?
+            <a href="{{ path('login') }}" class="auth-create">Se connecter</a>
+          </p>
+        </div>
+
+      {{ form_end(form) }}
+    </div>
+  </section>
+{% endblock %}

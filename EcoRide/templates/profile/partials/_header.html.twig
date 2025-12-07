@@ -1,0 +1,72 @@
+<header class="profile-header">
+  <div class="ph-left d-flex align-items-center gap-4">
+    <div class="text-center">
+      {% if user.emailVerified %}
+        <div class="text-success" style="font-size: 70px;">
+          <i class="bi bi-shield-check" aria-hidden="true"></i>
+        </div>
+        <div class="fw-semibold text-success">E-mail vérifié</div>
+      {% else %}
+        <div class="text-secondary" style="font-size: 70px;">
+          <i class="bi bi-shield-exclamation" aria-hidden="true"></i>
+        </div>
+        <div class="fw-semibold text-secondary">E-mail non vérifié</div>
+        <form method="post"
+              action="{{ path('profile_email_resend') }}"
+              class="d-inline-block mt-2">
+          <input type="hidden" name="_token" value="{{ csrf_token('resend_verification_email') }}">
+          <button class="btn btn-sm btn-outline-secondary" type="submit">
+            Renvoyer le lien
+          </button>
+        </form>
+      {% endif %}
+    </div>
+
+    {% set profileImage = vich_uploader_asset(app.user, 'photoFile') ?? null %}
+    {% set firstInitial = app.user.prenom is defined and app.user.prenom ? app.user.prenom|first : '?' %}
+    {% set lastInitial = app.user.nom is defined and app.user.nom ? app.user.nom|first : '' %}
+    <div class="profile-avatar d-flex align-items-center justify-content-center rounded-circle border border-2 border-success-subtle bg-white overflow-hidden"
+         style="width: 96px; height: 96px; font-size: 1.5rem;">
+      {% if profileImage %}
+        <img src="{{ profileImage }}"
+             alt="Photo de {{ app.user.prenom }} {{ app.user.nom }}"
+             class="w-100 h-100 object-fit-cover">
+      {% else %}
+        <span class="fw-semibold text-success">
+          {{ firstInitial|upper }}{{ lastInitial|upper }}
+        </span>
+      {% endif %}
+    </div>
+    <div class="profile-id ms-3 ms-lg-4">
+      <h1 class="profile-name">
+        {{ app.user.prenom }} {{ app.user.nom }}
+      </h1>
+      <p class="profile-meta">
+        {{ app.user.email }}
+        {% if app.user.pseudo %}
+          • {{ app.user.pseudo }}
+        {% endif %}
+      </p>
+    </div>
+  </div>
+
+  <div class="ph-right">
+    <div class="stat-card">
+      <div class="stat-value">{{ credits }}</div>
+      <div class="stat-label">crédits disponibles</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">{{ rides_count }}</div>
+      <div class="stat-label">trajet(s) publiés</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">
+        {{ rating_avg|number_format(1, ',', ' ') }}
+      </div>
+      <div class="stat-label">
+        note moyenne
+        <span class="text-muted small">({{ rating_count }} avis)</span>
+      </div>
+    </div>
+  </div>
+</header>

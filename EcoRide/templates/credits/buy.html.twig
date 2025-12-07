@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Acheter des crédits{% endblock %}
+
+{% block body %}
+<section class="layout-container py-5">
+  <header class="mb-4 text-center">
+    <h1 class="h4 mb-2">Acheter des crédits</h1>
+    <p class="text-muted mb-0">
+      (Transaction fictive) - Aucun paiement réel n’est débité, vos crédits sont ajoutés immédiatement.
+    </p>
+  </header>
+
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <form method="post" class="vstack gap-3">
+            <input type="hidden" name="_token" value="{{ csrf_token('buy_credits') }}">
+
+            <div class="row g-2">
+              {% set presets = [10, 20, 50, 100] %}
+              {% for preset in presets %}
+                <div class="col-6 col-md-3">
+                  <button type="button" data-amount="{{ preset }}" class="btn btn-outline-success w-100 js-credit-preset">
+                    {{ preset }}
+                    <i class="bi bi-coin text-success" aria-hidden="true"></i>
+                    <br>
+                    <small class="text-muted">{{ preset }} €</small>
+                  </button>
+                </div>
+              {% endfor %}
+            </div>
+
+            <div>
+              <label for="amountCustom" class="form-label">Total</label>
+              <div class="input-group">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="amountCustom"
+                  name="amount"
+                  min="1"
+                  step="1"
+                  placeholder="Ex : 25"
+                >
+                <span class="input-group-text">€</span>
+                <button class="btn btn-success" type="submit">Payer</button>
+              </div>
+              <small class="text-muted d-block">Crédits ajoutés immédiatement, sans paiement réel.</small>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const bindPresetButtons = () => {
+    const input = document.getElementById('amountCustom');
+    if (!input) return;
+    document.querySelectorAll('.js-credit-preset').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const amount = btn.dataset.amount || '';
+        input.value = amount;
+        input.focus();
+      });
+    });
+  };
+
+  document.addEventListener('DOMContentLoaded', bindPresetButtons);
+  document.addEventListener('turbo:load', bindPresetButtons);
+</script>
+{% endblock %}

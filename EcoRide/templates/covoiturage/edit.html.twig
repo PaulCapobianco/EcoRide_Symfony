@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Modifier un trajet{% endblock %}
+{% block page_class %}page-ride-edit{% endblock %}
+
+{% block body %}
+<section class="layout-container py-4">
+
+  <header class="mb-4">
+    <h1 class="h3 mb-1">Modifier mon trajet</h1>
+    <p class="text-muted mb-0">
+      Mettez à jour les informations de votre covoiturage.
+    </p>
+
+    {% if covoiturage is defined %}
+      <div class="mt-3 p-3 border rounded-3 bg-light">
+        <div class="fw-semibold">
+          {{ covoiturage.lieuDepart }} &rarr; {{ covoiturage.lieuArrivee }}
+        </div>
+        <div class="text-muted small">
+          Départ le
+          {{ covoiturage.dateDepart ? covoiturage.dateDepart|date('d/m/Y') : '—' }}
+          à
+          {{ covoiturage.heureDepart ? covoiturage.heureDepart|date('H:i') : '--:--' }}
+        </div>
+      </div>
+    {% endif %}
+  </header>
+
+  <div class="card">
+    <div class="card-body">
+      {{ form_start(form) }}
+
+        <div class="row g-3">
+          {{ form_row(form.from) }}
+          {{ form_row(form.fromAddress) }}
+          {{ form_row(form.to) }}
+          {{ form_row(form.toAddress) }}
+          {{ form_row(form.date) }}
+          {{ form_row(form.timeStart) }}
+          {{ form_row(form.timeEnd) }}
+          {{ form_row(form.vehicle) }}
+          {{ form_row(form.seats) }}
+          {{ form_row(form.price) }}
+
+          {{ form_row(form.terms) }}
+        </div>
+
+        <div class="mt-4 d-flex justify-content-between gap-2">
+          {% if covoiturage is defined %}
+            <a href="{{ path('covoiturage_detail', { id: covoiturage.id }) }}"
+               class="btn btn-outline-secondary">
+              Annuler
+            </a>
+          {% else %}
+            <a href="{{ path('covoiturages') }}"
+               class="btn btn-outline-secondary">
+              Retour à la liste
+            </a>
+          {% endif %}
+
+          <button class="btn btn-primary">
+            Enregistrer les modifications
+          </button>
+        </div>
+
+      {{ form_end(form) }}
+    </div>
+  </div>
+
+</section>
+{% endblock %}

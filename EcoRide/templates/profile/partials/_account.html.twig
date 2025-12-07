@@ -1,0 +1,36 @@
+<section id="section-compte" class="settings-section card profile-card">
+  <div class="card-body">
+    <div class="card-title-row d-flex justify-content-between align-items-center">
+      <h2 class="card-title mb-0">Mon compte</h2>
+      <a href="{{ path('profile_edit') }}" class="btn btn-outline-secondary btn-sm">
+        Modifier mon profil
+      </a>
+    </div>
+
+    <dl class="row mt-3 mb-0">
+      <dt class="col-sm-3">Nom</dt>
+      <dd class="col-sm-9">{{ user.nom }}</dd>
+
+      <dt class="col-sm-3">Prénom</dt>
+      <dd class="col-sm-9">{{ user.prenom }}</dd>
+
+      <dt class="col-sm-3">E-mail</dt>
+      <dd class="col-sm-9">{{ user.email }}</dd>
+
+      <dt class="col-sm-3">Téléphone</dt>
+      <dd class="col-sm-9">{{ user.telephone ?? '—' }}</dd>
+
+      <dt class="col-sm-3">Pseudo</dt>
+      <dd class="col-sm-9">{{ user.pseudo ?? '—' }}</dd>
+
+      <dt class="col-sm-3">Adresse</dt>
+      <dd class="col-sm-9">
+        {% if user.adresse %}
+          {{ user.adresse|nl2br }}
+        {% else %}
+          —
+        {% endif %}
+      </dd>
+    </dl>
+  </div>
+</section>

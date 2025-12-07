@@ -1,0 +1,35 @@
+{% set passengerName = passenger.prenom ?? '' %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Annulation de covoiturage</title>
+</head>
+<body style="margin:0;padding:0;background:#f5f7f8;font-family:Arial,Helvetica,sans-serif;color:#1f2937;">
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background:#f5f7f8;padding:20px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
+          <tr>
+            <td style="background:linear-gradient(90deg,#1db954,#9FC131);padding:16px 20px;color:#fff;font-weight:bold;font-size:18px;">
+              EcoRide — Annulation de covoiturage
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px;">
+              <p style="margin:0 0 12px 0;">Bonjour {{ passengerName }},</p>
+              <p style="margin:0 0 12px 0;">
+                Le trajet <strong>{{ covoiturage.lieuDepart }} → {{ covoiturage.lieuArrivee }}</strong>
+                du {{ covoiturage.dateDepart|date('d/m/Y') }} à {{ covoiturage.heureDepart|date('H:i') }}
+                a été annulé par le conducteur.
+              </p>
+              <p style="margin:0 0 12px 0;">Vos crédits ont été recrédités sur votre compte EcoRide.</p>
+              <p style="margin:0;color:#6b7280;">L’équipe EcoRide</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% set driverName = driver ? (driver.pseudo ?? (driver.prenom ~ ' ' ~ driver.nom)) : 'Conducteur' %}
+<div class="border rounded-3 p-3 mb-3">
+  <div class="d-flex align-items-center gap-3 mb-2">
+    {% if driver and driver.photoProfilNom %}
+      <img src="{{ asset('uploads/profile/' ~ driver.photoProfilNom) }}" alt="Photo de profil" class="rounded-circle" style="width:56px;height:56px;object-fit:cover;">
+    {% else %}
+      <img src="{{ asset('images/default-avatar.png') }}" alt="Avatar" class="rounded-circle" style="width:56px;height:56px;object-fit:cover;">
+    {% endif %}
+    <div>
+      <div class="fw-semibold">{{ driverName }}</div>
+      {% if rating_avg is not null %}
+        <div class="text-muted small">
+          <i class="bi bi-star-fill text-warning"></i>
+          {{ rating_avg|number_format(1, ',', ' ') }} ({{ rating_count }} avis)
+        </div>
+      {% else %}
+        <div class="text-muted small">Aucun avis pour l’instant</div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if voiture %}
+    <div class="d-flex flex-wrap gap-2 text-muted small">
+      <span class="badge bg-light text-dark border">Véhicule : {{ voiture.marque ? voiture.marque.libelle : '' }} {{ voiture.modele }}</span>
+      <span class="badge bg-light text-dark border">Énergie : {{ voiture.energie }}</span>
+      <span class="badge bg-light text-dark border">Couleur : {{ voiture.couleur }}</span>
+      {% if voiture.datePremiereImmatriculation %}
+        <span class="badge bg-light text-dark border">Mise en circulation : {{ voiture.datePremiereImmatriculation }}</span>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>

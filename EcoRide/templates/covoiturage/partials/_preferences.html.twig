@@ -1,0 +1,15 @@
+<div class="border rounded-3 p-3 mb-3">
+  <h2 class="h6 mb-2">Préférences du conducteur</h2>
+  {% if is_eco %}
+    <div class="text-success small mb-2">Trajet écologique (voiture électrique)</div>
+  {% endif %}
+  {% if preferences is not empty %}
+    <div class="d-flex flex-wrap gap-2">
+      {% for pref in preferences %}
+        <span class="badge bg-light text-dark border">{{ pref.label }}</span>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted small mb-0">Aucune préférence renseignée.</p>
+  {% endif %}
+</div>

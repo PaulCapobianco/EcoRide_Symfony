@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}EcoRide{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap-icons/font/bootstrap-icons.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+
+    {{ importmap('app') }}
+</head>
+<body>
+
+    {% include 'partials/_header.html.twig' %}
+
+    <div class="cookie-modal" data-cookie-modal>
+        <div class="cookie-modal__dialog">
+            <h2 class="h5 mb-2">Cookies essentiels</h2>
+            <p class="mb-3">Nous utilisons des cookies techniques pour faire fonctionner EcoRide. Vous pouvez consentir ou continuer sans.</p>
+            <div class="d-flex gap-2 justify-content-end">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-cookie-modal-close>Continuer sans consentement</button>
+                <button type="button" class="btn btn-success btn-sm" data-cookie-modal-accept>J’accepte</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="page {% block page_class %}{% endblock %}" id="content">
+
+        {% if disable_global_flashes is not defined %}
+            {% set flashes = app.flashes %}
+            {% if flashes is not empty %}
+                <div class="flash-container">
+                    <div class="layout-container">
+                        {% for label, messages in flashes %}
+                            {% for message in messages %}
+                                {% set bsClass =
+                                    label == 'success' ? 'success' :
+                                    (label == 'danger' ? 'danger' :
+                                    (label == 'warning' ? 'warning' :
+                                    (label == 'info' ? 'info' : 'secondary')))
+                                %}
+
+                                <div class="alert alert-{{ bsClass }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="alert"
+                                        aria-label="Fermer"></button>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        {% block body %}{% endblock %}
+    </main>
+
+    {% include 'partials/_footer.html.twig' %}
+
+</body>
+</html>

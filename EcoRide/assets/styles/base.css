@@ -1,0 +1,93 @@
+/* =======================================================================
+   Base : polices & variables
+======================================================================= */
+@font-face{
+  font-family: "MerriweatherEco";
+  src: url("../fonts/Merriweather-Italic-VariableFont_opsz,wdth,wght.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face{
+  font-family: "LoraLocal";
+  src: url("../fonts/Lora-VariableFont_wght.ttf") format("truetype");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+:root{
+  --brand: #1db954;
+  --brand-ink: #0d3b2e;
+  --ink: #0b0b0b;
+  --muted: #6b7280;
+  --bg: #ffffff;
+  --bg-soft: #f5f7f8;
+  --border: #e5e7eb;
+
+  --radius: 16px;
+  --container: 1220px;
+  --gap: 24px;
+
+  --nav-green: #9FC131;
+
+  --footer-bg: var(--brand-ink);
+  --footer-ink: #ffffff;
+  --footer-muted: #cfe9da;
+  --footer-link: #d7ffe9;
+  --footer-link-hover: #ffffff;
+  --header-height: 0px;
+}
+
+/* =======================================================================
+   Base : reset + typo + utilitaires
+======================================================================= */
+*{ box-sizing: border-box; }
+html, body{
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* Layout global */
+body{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0;
+  font-family: "LoraLocal", Georgia, "Times New Roman", serif;
+  line-height: 1.4;
+  overflow-x: hidden;
+}
+.page{
+  flex: 1 0 auto;
+}
+
+/* Un peu plus d'espace sous le header pour les pages avec formulaires
+   (login, register, publier un trajet) */
+.page.page-auth,
+.page.page-ride-publish{
+  padding-top: 24px;
+}
+
+.hidden{ display: none !important; }
+html:not(.js) .js-only{ display: none !important; }
+
+h1, h2, h3, .section-title, .hero__title{
+  font-family: "MerriweatherEco", serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.layout-container{
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+.section-title{
+  font-size: clamp(1.25rem, 1.2rem + 0.8vw, 1.8rem);
+  color: var(--brand-ink);
+  margin: 0 0 12px;
+}
+.table-wrapper{ overflow-x: auto; }

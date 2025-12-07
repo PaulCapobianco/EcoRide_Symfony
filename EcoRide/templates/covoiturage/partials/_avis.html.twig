@@ -1,0 +1,28 @@
+<div class="border rounded-3 p-3 mb-3">
+  <h2 class="h6 mb-2">Avis sur le conducteur</h2>
+  {% if avis_list is empty %}
+    <p class="text-muted small mb-0">Aucun avis pour le moment.</p>
+  {% else %}
+    <div class="vstack gap-2">
+      {% for avis in avis_list %}
+        <div class="border rounded-3 p-2">
+          <div class="d-flex justify-content-between small">
+            <div>
+              {% if avis.note is not null %}
+                <span class="badge bg-warning text-dark">Note : {{ avis.note }}</span>
+              {% else %}
+                <span class="badge bg-secondary">Sans note</span>
+              {% endif %}
+            </div>
+            {% if avis.statut %}
+              <span class="badge bg-light text-dark border">{{ avis.statut }}</span>
+            {% endif %}
+          </div>
+          {% if avis.commentaire %}
+            <div class="text-muted small mt-1">{{ avis.commentaire }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

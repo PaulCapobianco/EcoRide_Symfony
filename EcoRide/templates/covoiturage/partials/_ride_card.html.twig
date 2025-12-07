@@ -1,0 +1,113 @@
+{% set conducteur = ride.utilisateur %}
+{% set energie = ride.voiture ? ride.voiture.energie : null %}
+{% set ecoEnergies = ['Électrique', 'Electrique'] %}
+{% set isEco = energie in ecoEnergies %}
+{% set priceCredits = ride.prixPersonne|round(0, 'ceil') %}
+{% set remaining = ride.nbPlace ?? 0 %}
+{% set status = ride.statut ?? 'OUVERT' %}
+{% if status in ['OUVERT', ''] and remaining <= 0 %}
+  {% set status = 'COMPLET' %}
+{% endif %}
+{% set badgeClass =
+  status == 'OUVERT' ? 'bg-success' :
+  (status == 'COMPLET' ? 'bg-secondary' :
+  (status == 'ANNULE' ? 'bg-danger' :
+  (status == 'EN_COURS' ? 'bg-primary' :
+  (status == 'TERMINE' ? 'bg-info text-dark' : 'bg-outline-secondary'))))
+%}
+
+<article class="ride-card card h-100">
+  <div class="card-body d-flex flex-column">
+
+    <div class="ride-card__header">
+      {% if conducteur and conducteur.photoProfilNom %}
+        <img
+          src="{{ asset('uploads/profile/' ~ conducteur.photoProfilNom) }}"
+          alt="Photo de profil de {{ conducteur.prenom }} {{ conducteur.nom }}"
+          class="ride-card__avatar"
+        >
+      {% else %}
+        <img
+          src="{{ asset('images/default-avatar.png') }}"
+          alt="Avatar"
+          class="ride-card__avatar"
+        >
+      {% endif %}
+
+      <div class="ride-card__driver" style="min-width: 0;">
+        <strong class="text-truncate d-block" style="max-width: 180px;">
+          {% if conducteur %}
+            {% if conducteur.pseudo %}
+              {{ conducteur.pseudo }}
+            {% else %}
+              {{ conducteur.prenom }} {{ conducteur.nom }}
+            {% endif %}
+          {% else %}
+            Conducteur
+          {% endif %}
+        </strong>
+
+        {% if conducteur and ratings is defined and ratings[conducteur.id] is defined %}
+          {% set r = ratings[conducteur.id] %}
+          <div class="text-muted small text-truncate" style="max-width: 180px;">
+            <i class="bi bi-star-fill rating-icon"></i>
+            {{ r.avg|number_format(1, ',', ' ') }} ({{ r.count }} avis)
+          </div>
+        {% else %}
+          <div class="text-muted small text-truncate" style="max-width: 180px;">
+            <i class="bi bi-star rating-icon"></i>
+            — (pas encore d'avis)
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="ride-card__badges">
+        {% if isEco %}
+          <span class="badge ride-card__badge ride-card__badge--eco">
+            EcoRider
+          </span>
+        {% endif %}
+
+        <span class="badge ride-card__badge {{ badgeClass }}">
+          {{ status|upper }}
+        </span>
+      </div>
+    </div>
+
+    <h3 class="h6 mb-1">
+      {{ ride.lieuDepart }} → {{ ride.lieuArrivee }}
+    </h3>
+
+    <div class="text-muted small mb-2">
+      {{ ride.dateDepart|date('d/m/Y') }}
+      ·
+      {{ ride.heureDepart ? ride.heureDepart|date('H:i') : '--:--' }}
+      {% if ride.heureArrivee %}
+        — {{ ride.heureArrivee|date('H:i') }}
+      {% endif %}
+    </div>
+
+    <div class="ride-card__meta mb-1 d-flex justify-content-between">
+      <span>{{ ride.placesRestantes }} place(s) restante(s)</span>
+      <span class="d-inline-flex align-items-center gap-2">
+        {{ priceCredits }}
+        <i class="bi bi-coin text-success" aria-label="Crédits EcoRide"></i>
+      </span>
+    </div>
+
+    <p class="text-muted small mb-3">
+      {% if isEco %}
+        Trajet écologique (voiture électrique)
+      {% else %}
+        Trajet non écologique
+      {% endif %}
+    </p>
+
+    <a
+      class="btn btn-outline-primary w-100 mt-auto"
+      href="{{ path('covoiturage_detail', {id: ride.id}) }}"
+    >
+      Détail
+    </a>
+  </div>
+</article>

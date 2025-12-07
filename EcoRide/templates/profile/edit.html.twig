@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Modifier mon profil{% endblock %}
+
+{% block body %}
+<div class="page-profile-edit py-4">
+  <section class="layout-container profile-wrap mt-4">
+
+    <header class="profile-header mb-3">
+      <div class="ph-left d-flex align-items-center gap-3">
+        <div class="profile-avatar" aria-hidden="true" style="width:80px;height:80px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+          {% if user.photoProfilNom %}
+            <img
+              src="{{ asset('uploads/profile/' ~ user.photoProfilNom) }}"
+              alt="Photo de profil de {{ user.prenom }} {{ user.nom }}"
+              style="width: 100%; height: 100%; object-fit: cover; object-position: center;"
+            >
+          {% else %}
+            <img
+              src="{{ asset('images/default-avatar.png') }}"
+              alt="Avatar par défaut"
+              style="width: 100%; height: 100%; object-fit: cover; object-position: center;"
+            >
+          {% endif %}
+        </div>
+        <div class="profile-id">
+          <h1 class="profile-name mb-1">
+            Modifier mon profil
+          </h1>
+          <p class="profile-meta mb-0">
+            {{ user.prenom }} {{ user.nom }} — {{ user.email }}
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div class="card profile-card mb-5">
+      <div class="card-body">
+        <div class="card-title-row mb-2 d-flex justify-content-between align-items-center">
+          <h2 class="card-title mb-0">Informations du compte</h2>
+          <a href="{{ path('profile') }}" class="btn btn-outline-secondary btn-sm">
+            Retour au profil
+          </a>
+        </div>
+
+        {{ form_start(form, { attr: { class: 'row g-3', novalidate: 'novalidate' } }) }}
+
+          {{ form_row(form.photoFile) }}
+          {{ form_row(form.nom) }}
+          {{ form_row(form.prenom) }}
+          {{ form_row(form.email) }}
+          {{ form_row(form.telephone) }}
+          {{ form_row(form.pseudo) }}
+          {{ form_row(form.adresse) }}
+
+          <div class="col-12 d-flex justify-content-between mt-2">
+            <a href="{{ path('profile') }}" class="btn btn-outline-secondary btn-sm">
+              Annuler
+            </a>
+            <button type="submit" class="btn btn-success btn-sm">
+              Enregistrer les modifications
+            </button>
+          </div>
+
+        {{ form_end(form) }}
+      </div>
+    </div>
+
+    {% if password_form is defined %}
+      <div class="card profile-card mb-5">
+        <div class="card-body">
+          <div class="card-title-row mb-2 d-flex justify-content-between align-items-center">
+            <h2 class="card-title mb-0">Sécurité / mot de passe</h2>
+          </div>
+
+          <p class="text-muted small">
+            Choisissez un mot de passe d’au moins 8 caractères incluant une majuscule, une minuscule, un chiffre
+            et un caractère spécial.
+          </p>
+
+          {{ form_start(password_form, { attr: { class: 'row g-3', novalidate: 'novalidate' } }) }}
+            {{ form_row(password_form.currentPassword) }}
+            {{ form_row(password_form.newPassword.first) }}
+            {{ form_row(password_form.newPassword.second) }}
+
+            <div class="col-12 d-flex justify-content-end gap-2 mt-2">
+              <button type="submit" class="btn btn-success btn-sm">
+                Mettre à jour le mot de passe
+              </button>
+            </div>
+          {{ form_end(password_form) }}
+        </div>
+      </div>
+    {% endif %}
+
+  </section>
+</div>
+{% endblock %}

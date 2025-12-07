@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Préférences conducteur{% endblock %}
+{% block page_class %}page-profile{% endblock %}
+
+{% block body %}
+  <section class="layout-container profile-wrap">
+
+    <section class="settings-section card profile-card">
+      <div class="card-body">
+        <div class="card-title-row">
+          <h1 class="card-title mb-0">Préférences conducteur</h1>
+          <a href="{{ path('profile') }}#section-preferences" class="btn btn-outline-secondary btn-sm">
+            Retour au profil
+          </a>
+        </div>
+
+        <form method="post" action="{{ path('profile_preferences') }}" class="row g-3 mt-1">
+          <input type="hidden" name="_token" value="{{ csrf_token('profile_prefs') }}">
+
+          <div class="col-12">
+            <h2 class="h6 mb-2">Préférences standard</h2>
+
+            <div class="pref-list">
+              <div>
+                <input
+                  type="checkbox"
+                  class="btn-check"
+                  id="pref_music"
+                  name="music"
+                  autocomplete="off"
+                  {% if prefs.builtins.music %}checked{% endif %}
+                >
+                <label class="btn btn-sm btn-outline-success" for="pref_music">
+                  Musique
+                </label>
+              </div>
+
+              <div>
+                <input
+                  type="checkbox"
+                  class="btn-check"
+                  id="pref_ac"
+                  name="ac"
+                  autocomplete="off"
+                  {% if prefs.builtins.ac %}checked{% endif %}
+                >
+                <label class="btn btn-sm btn-outline-success" for="pref_ac">
+                  Climatisation
+                </label>
+              </div>
+
+              <div>
+                <input
+                  type="checkbox"
+                  class="btn-check"
+                  id="pref_pets"
+                  name="pets"
+                  autocomplete="off"
+                  {% if prefs.builtins.pets %}checked{% endif %}
+                >
+                <label class="btn btn-sm btn-outline-success" for="pref_pets">
+                  Animaux
+                </label>
+              </div>
+
+              <div>
+                <input
+                  type="checkbox"
+                  class="btn-check"
+                  id="pref_baggage"
+                  name="baggage"
+                  autocomplete="off"
+                  {% if prefs.builtins.baggage %}checked{% endif %}
+                >
+                <label class="btn btn-sm btn-outline-success" for="pref_baggage">
+                  Bagages volumineux
+                </label>
+              </div>
+
+              <div>
+                <input
+                  type="checkbox"
+                  class="btn-check"
+                  id="pref_noSmoking"
+                  name="noSmoking"
+                  autocomplete="off"
+                  {% if prefs.builtins.noSmoking %}checked{% endif %}
+                >
+                <label class="btn btn-sm btn-outline-success" for="pref_noSmoking">
+                  Non-fumeur
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <h2 class="h6 mb-2">Préférences personnalisées</h2>
+
+            <div class="mb-3">
+              <label for="new_custom_pref" class="form-label">Ajouter une préférence</label>
+              <div class="input-group">
+                <input
+                  type="text"
+                  name="new_custom_pref"
+                  id="new_custom_pref"
+                  class="form-control"
+                  maxlength="50"
+                  placeholder="Ex : Silence total, pas de parfum…"
+                >
+                <button type="submit" class="btn btn-success">
+                  Ajouter
+                </button>
+              </div>
+              <div class="form-text">
+                Les nouvelles préférences seront visibles sur votre profil et vos trajets.
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 d-flex justify-content-end mt-2">
+            <button type="submit" class="btn btn-success">
+              Enregistrer mes préférences
+            </button>
+          </div>
+        </form>
+
+        <div class="col-12 mt-3">
+          {% if prefs.custom is not empty %}
+            <ul class="list-group">
+              {% for customPref in prefs.custom %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <span>{{ customPref.label }}</span>
+
+                  <form
+                    method="post"
+                    action="{{ path('profile_preferences_delete', { id: customPref.id }) }}"
+                    class="ms-3"
+                    onsubmit="return confirm('Supprimer cette préférence ?');"
+                  >
+                    <input
+                      type="hidden"
+                      name="_token"
+                      value="{{ csrf_token('delete_pref_' ~ customPref.id) }}"
+                    >
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                      Supprimer
+                    </button>
+                  </form>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted mb-0">
+              Vous n'avez pas encore de préférences personnalisées.
+            </p>
+          {% endif %}
+        </div>
+
+      </div>
+    </section>
+
+  </section>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% set isChange = isEmailChange ?? false %}
+{% set firstName = user.prenom ?? '' %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>{% if isChange %}Confirmez votre nouvelle adresse{% else %}Activez votre compte{% endif %}</title>
+</head>
+<body style="margin:0;padding:0;background:#f5f7f8;font-family:Arial,Helvetica,sans-serif;color:#1f2937;">
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background:#f5f7f8;padding:20px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
+          <tr>
+            <td style="background:linear-gradient(90deg,#1db954,#9FC131);padding:16px 20px;color:#fff;font-weight:bold;font-size:18px;">
+              EcoRide — {% if isChange %}Validation e-mail{% else %}Activation de compte{% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px;">
+              <p style="margin:0 0 12px 0;">Bonjour {{ firstName }},</p>
+              {% if isChange %}
+                <p style="margin:0 0 12px 0;">
+                  Vous avez demandé à changer votre e-mail EcoRide en <strong>{{ targetEmail }}</strong>.
+                  Merci de confirmer ce changement en cliquant sur le bouton ci-dessous.
+                </p>
+              {% else %}
+                <p style="margin:0 0 12px 0;">
+                  Bienvenue sur EcoRide ! Merci de confirmer votre adresse e-mail pour activer votre compte et profiter de vos crédits de bienvenue.
+                </p>
+              {% endif %}
+
+              <p style="margin:0 0 18px 0;">
+                <a href="{{ verificationUrl }}"
+                   style="display:inline-block;background:#1db954;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:bold;">
+                  Confirmer mon e-mail
+                </a>
+              </p>
+
+              <p style="margin:0 0 12px 0;color:#6b7280;font-size:13px;">
+                Si vous n’êtes pas à l’origine de cette demande, ignorez ce message.
+              </p>
+              <p style="margin:0;color:#6b7280;">L’équipe EcoRide</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

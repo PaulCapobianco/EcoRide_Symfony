@@ -1,0 +1,65 @@
+<section id="section-role" class="settings-section card profile-card">
+  <div class="card-body">
+    <div class="card-title-row">
+      <h2 class="card-title mb-0">Rôle &amp; statut</h2>
+    </div>
+    <p class="mb-2">
+      Choisissez votre rôle principal.
+      <br>
+      <small class="text-muted">
+        Pour devenir conducteur, vous devez avoir enregistré au moins un véhicule.
+        Si vous n’en avez pas encore, nous vous proposerons d’en ajouter un.
+      </small>
+    </p>
+
+    <form action="{{ path('profile_role_update') }}" method="post" class="mt-1">
+      <input type="hidden" name="_token" value="{{ csrf_token('profile_role') }}">
+
+      <div
+        class="role-switch-inline mb-2"
+        role="radiogroup"
+        aria-label="Rôle du compte"
+        data-current-role="{{ user.profilType }}"
+      >
+        <input
+          type="radio"
+          class="btn-check"
+          name="profil_type"
+          id="role2-passager"
+          value="passenger"
+          data-action="change->profile#onRoleChange"
+          {% if user.profilType == 'passenger' %}checked{% endif %}
+        >
+        <label class="btn btn-outline-success" for="role2-passager">Passager</label>
+
+        <input
+          type="radio"
+          class="btn-check"
+          name="profil_type"
+          id="role2-conducteur"
+          value="driver"
+          data-action="change->profile#onRoleChange"
+          {% if user.profilType == 'driver' %}checked{% endif %}
+        >
+        <label class="btn btn-outline-success" for="role2-conducteur">Conducteur</label>
+
+        <input
+          type="radio"
+          class="btn-check"
+          name="profil_type"
+          id="role2-both"
+          value="both"
+          data-action="change->profile#onRoleChange"
+          {% if user.profilType == 'both' %}checked{% endif %}
+        >
+        <label class="btn btn-outline-success" for="role2-both">Les deux</label>
+      </div>
+
+      <div class="d-flex justify-content-end mt-2">
+        <button type="submit" class="btn btn-success btn-sm">
+          Mettre à jour mon rôle
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

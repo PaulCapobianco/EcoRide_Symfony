@@ -1,0 +1,20 @@
+/* assets/styles/app.css */
+
+/* Base : polices, variables, reset, typographie, utilitaires */
+@import "base.css";
+
+/* Layout global : header, navigation, footer, cartes génériques */
+@import "layout.css";
+
+/* Bloc Home + listes de trajets (home + page covoiturage) */
+@import "home-rides.css";
+
+/* Pages spécifiques */
+@import "auth.css";
+@import "how.css";
+@import "contact.css";
+@import "profile.css";
+@import "vehicle.css";
+
+/* Media queries & responsive */
+@import "responsive.css";

@@ -1,0 +1,25 @@
+<aside class="settings-aside">
+  <h2 class="settings-title">Paramètres</h2>
+  <nav class="settings-nav" aria-label="Navigation profil">
+    <a href="#section-compte" class="settings-link is-active">Mon compte</a>
+    <a href="#section-role" class="settings-link">Rôle &amp; statut</a>
+    <a href="#section-avis" class="settings-link">Avis reçus</a>
+    <a
+      href="#section-preferences"
+      class="settings-link"
+      data-requires="driver"
+      {% if user.profilType == 'passenger' %}hidden{% endif %}
+    >
+      Préférences conducteur
+    </a>
+    <a
+      href="#section-vehicules"
+      class="settings-link"
+      data-requires="driver"
+      {% if user.profilType == 'passenger' %}hidden{% endif %}
+    >
+      Véhicules
+    </a>
+    <a href="#section-paiements" class="settings-link">Paiements</a>
+  </nav>
+</aside>

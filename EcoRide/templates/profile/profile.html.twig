@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoRide — Mon profil{% endblock %}
+
+{% block body %}
+<div class="page-profile" data-controller="profile">
+  <section class="layout-container profile-wrap">
+
+    {% include 'profile/partials/_header.html.twig' with {
+      user: user,
+      credits: credits,
+      rides_count: rides_count,
+      rating_avg: rating_avg,
+      rating_count: rating_count
+    } %}
+
+    <div class="profile-layout">
+      {% include 'profile/partials/_sidebar.html.twig' with { user: user } %}
+
+      <div class="settings-content">
+        {% include 'profile/partials/_account.html.twig' with { user: user } %}
+        {% include 'profile/partials/_role.html.twig' with { user: user } %}
+        {% include 'profile/partials/_reviews.html.twig' with { driver_avis: driver_avis, driver_avis_pagination: driver_avis_pagination, rating_avg: rating_avg, rating_count: rating_count } %}
+        {% include 'profile/partials/_preferences.html.twig' with { user: user, prefs: prefs } %}
+        {% include 'profile/partials/_vehicles.html.twig' with { user: user, vehicules: vehicules } %}
+        {% include 'profile/partials/_payments.html.twig' %}
+      </div>
+    </div>
+
+  </section>
+</div>
+{% endblock %}
