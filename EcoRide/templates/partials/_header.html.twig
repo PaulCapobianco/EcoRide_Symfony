@@ -18,7 +18,8 @@
       <div class="d-flex align-items-center gap-2 order-1 order-lg-2">
 
         <div class="dropdown">
-          <button class="btn btn-link text-decoration-none fw-semibold d-flex align-items-center gap-1"
+          {# Tout le bloc "Mon compte" (icone + texte + flèche) en vert #}
+          <button class="btn btn-link text-decoration-none fw-semibold d-flex align-items-center gap-1 text-success"
                   type="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false">
@@ -43,13 +44,19 @@
               <li><a class="dropdown-item" href="{{ path('profile') }}">Mon profil</a></li>
               <li><a class="dropdown-item" href="{{ path('profile_rides') }}">Voir mes trajets</a></li>
               <li><a class="dropdown-item" href="{{ path('profile_feedback') }}">Mes avis trajets</a></li>
-              <li><hr class="dropdown-divider"></li>
 
-              {% if is_granted('ROLE_ADMIN') %}
-                <li><a class="dropdown-item" href="{{ path('admin_dashboard') }}">Espace admin</a></li>
-              {% endif %}
-              {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYE') %}
-                <li><a class="dropdown-item" href="{{ path('admin_avis_index') }}">Espace employé</a></li>
+              {# Backoffice seulement si admin/employé, pour éviter les doubles séparateurs #}
+              {% set hasBackoffice = is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYE') %}
+              {% if hasBackoffice %}
+                <li><hr class="dropdown-divider"></li>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                  <li><a class="dropdown-item" href="{{ path('admin_dashboard') }}">Espace admin</a></li>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYE') %}
+                  <li><a class="dropdown-item" href="{{ path('admin_avis_index') }}">Espace employé</a></li>
+                {% endif %}
               {% endif %}
 
               <li><hr class="dropdown-divider"></li>
